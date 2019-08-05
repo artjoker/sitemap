@@ -6,17 +6,9 @@ namespace Artjoker\Sitemap\Traits;
 
 trait Sitemap
 {
-    public $columnName = 'alias';
-
-    public $baseUrl = null;
-
     public function getUrls() : array
     {
-        if ($this->baseUrl) {
-            $baseUrl = $this->baseUrl;
-        } else {
-            $baseUrl = url('/');
-        }
+        $baseUrl = $this->getBaseUrl();
 
         $urls = [];
 
@@ -31,6 +23,16 @@ trait Sitemap
 
     public function makeUrl($baseUrl, $item) : string
     {
-        return $baseUrl . '/' . $item->{$this->columnName};
+        return $baseUrl . '/' . $item->{$this->getAlias()};
+    }
+
+    public function getAlias()
+    {
+        return ($this->columnName) ? $this->columnName : 'alias';
+    }
+
+    public function getBaseUrl()
+    {
+        return ($this->baseUrl) ? $this->baseUrl : url('/');
     }
 }
