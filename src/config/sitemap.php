@@ -24,4 +24,9 @@
         'static_routes' => [
 
         ],
+
+        /**
+         * how many pages will be in one file
+         */
+        'sitemap_count' => 2,
     ];
