@@ -25,6 +25,11 @@
 
         ],
 
+        // locales to multi-language urls
+        'locales' => [
+            'en'
+        ],
+
         /**
          * how many pages will be in one file
          */

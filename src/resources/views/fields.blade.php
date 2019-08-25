@@ -43,6 +43,6 @@
 </div>
 <div class="col-12 col-sm-12 col-md-12 col-lg-12">
     <button type="submit" class="btn btn-primary text-uppercase pull-right"> @lang('sitemap::sitemap.save')</button>
-    <a href="{{ route(config('sitemap.route_prefix') . '.sitemap.index') }}" data-dialog="@lang('sitemap::sitemap.want_to_go_back')" data-do="link"
+    <a href="{{ route(config('sitemap.route_as', 'backend.') . '.sitemap.index') }}" data-dialog="@lang('sitemap::sitemap.want_to_go_back')" data-do="link"
        class="btn btn-dark text-uppercase pull-right"> @lang('sitemap::sitemap.back')</a>
 </div>
