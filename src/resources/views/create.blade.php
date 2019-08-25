@@ -5,7 +5,7 @@
 @section('content')
     <div class="panel panel-default user-panel panel-flat">
         <div class="panel-body">
-            {!! Form::open(['route' => [config('sitemap.route_as', 'backend.') . '.sitemap.store'],'method'=>'POST','autocomplete'=>'off','files'=>true,'class'=>'needs-validation','novalidate']) !!}
+            {!! Form::open(['route' => [config('sitemap.route_as', 'backend.') . 'sitemap.store'],'method'=>'POST','autocomplete'=>'off','files'=>true,'class'=>'needs-validation','novalidate']) !!}
                 @include('sitemap::fields')
             {!! Form::close() !!}
         </div>

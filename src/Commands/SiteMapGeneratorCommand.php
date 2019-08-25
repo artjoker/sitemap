@@ -50,6 +50,7 @@ class SiteMapGeneratorCommand extends Command
         $pagesCount = $pages->count();
         $bar = $this->output->createProgressBar($pagesCount);
         $separateSiteMap = false;
+        $sitemapCounter = (config('sitemap.enable_locales') && count(config('sitemap.locales')) > 0) ?  count(config('sitemap.locales')) : 1;
 
         if ($pagesCount > config('sitemap.sitemap_count')) {
             $separateSiteMap = true;
@@ -57,13 +58,11 @@ class SiteMapGeneratorCommand extends Command
         }
 
         $bar->start();
-        $pages->chunk(100, function ($pages) use ($bar, &$sitemap, &$currentCount, &$separatedSiteMap, &$siteMapsCount) {
+        $pages->chunk(100, function ($pages) use ($bar, &$sitemap, &$currentCount, &$separatedSiteMap, &$siteMapsCount, $sitemapCounter) {
             foreach ($pages as $page) {
                 $page = $page->toArray();
-                foreach (config('sitemap.locales') as $lang) {
-                    $page = array_merge($page, ['locale' => $lang]);
-                    $sitemap .= view('sitemap::url', $page)->render();
-                }
+                $sitemap = $this->_getLinkXml($page, $sitemap);
+                $currentCount += $sitemapCounter;
 
                 if ($currentCount >= config('sitemap.sitemap_count')) {
                     $fileName = 'sitemap' . ($siteMapsCount + 1) . '.xml';
@@ -83,7 +82,6 @@ class SiteMapGeneratorCommand extends Command
                     $siteMapsCount++;
                 }
 
-                $currentCount++;
                 $bar->advance();
             }
         });
@@ -101,5 +99,24 @@ class SiteMapGeneratorCommand extends Command
                     'locale' => config('app.locale'),
                 ])->render());
 
+    }
+
+    private function _getLinkXml($page, $sitemap)
+    {
+        if (config('sitemap.enable_locales') && count(config('sitemap.locales')) > 0) {
+            foreach (config('sitemap.locales') as $lang) {
+                $data = [
+                    'alias' => (config('sitemap.hide_default_locale') && config('app.locale') == $lang) ? $page['alias'] : str_replace(url('/'), url('/') . '/' . $lang, $page['alias']),
+                    'lastmod' => $page['lastmod'],
+                    'priority' => $page['priority'],
+                    'changefreq' => $page['changefreq'],
+                ];
+                $sitemap .= view('sitemap::url', $data)->render();
+            }
+        } else {
+            $sitemap .= view('sitemap::url', $page)->render();
+        }
+
+        return $sitemap;
     }
 }

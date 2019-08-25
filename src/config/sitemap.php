@@ -1,15 +1,23 @@
 <?php
     return [
-        // prefix to configurate url to sitemap
+        /**
+         * prefix to configurate url to sitemap
+         */
         'route_prefix' => env('BACKEND_URL', 'backend'),
 
-        // config for route prefix
+        /**
+         * config for route prefix
+         */
         'route_as' => 'backend.',
 
-        //driver for sitemap.xml
+        /**
+         * driver for sitemap.xml
+         */
         'filesystem_driver' => 'public',
 
-        // routes middleware
+        /**
+         * routes middleware
+         */
         'route_middleware' => ['web'],
 
         /**
@@ -25,13 +33,35 @@
 
         ],
 
-        // locales to multi-language urls
+        /**
+         * enable multi-language urls
+         */
+        'enable_locales' => false,
+
+        /**
+         * Hide default locale in url from app.locale config
+         */
+        'hide_default_locale' => false,
+
+        /**
+         * locales to multi-language urls
+         */
         'locales' => [
-            'en'
+            'en',
         ],
 
         /**
          * how many pages will be in one file
          */
-        'sitemap_count' => 2,
+        'sitemap_count' => 40000,
+
+        /**
+         * Command to generate SiteMap
+         */
+        'sitemap_generate_command' => 'sitemap:generate',
+
+        /**
+         * Jobs priority
+         */
+        'jobs_priority' => 'default',
     ];

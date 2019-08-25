@@ -2,6 +2,7 @@
 
 namespace Artjoker\Sitemap\Repositories;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Artjoker\Sitemap\Models\Sitemap;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class SitemapRepository
     public function store(Sitemap $sitemap)
     {
         $sitemap->alias = $this->request->alias;
-        $sitemap->lastmod = $this->request->lastmod;
+        $sitemap->lastmod = Carbon::parse($this->request->lastmod);
         $sitemap->priority = $this->request->priority;
         $sitemap->changefreq = $this->request->changefreq;
         $sitemap->is_active = isset($this->request->is_active);

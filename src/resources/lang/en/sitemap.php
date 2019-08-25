@@ -25,4 +25,5 @@ return [
     'load_urls' => 'Load dynamic URL\'s',
     'nothing_found' => 'Nothing found',
     'generate_sitemap' => 'Generate site map',
+    'sitemap_generate_job' => 'The task of creating a site map is queued',
 ];

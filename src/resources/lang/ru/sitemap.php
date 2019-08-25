@@ -24,5 +24,6 @@ return [
     'delete_question' => 'Вы уверены что хотите удалить эту ссылку?',
     'load_urls' => 'Load dynamic URL\'s',
     'nothing_found' => 'Ничего не найдено',
-    'generate_sitemap' => 'Создать карту сайта'
+    'generate_sitemap' => 'Создать карту сайта',
+    'sitemap_generate_job' => 'Задача по созданию карты сайта поставлена в очередь',
 ];

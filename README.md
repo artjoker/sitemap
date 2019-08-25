@@ -24,31 +24,70 @@ php artisan vendor:publish --tag=sitemap-styles
 ## Optional Features
 
 ```
-        // prefix to configurate url to sitemap
+        /**
+         * prefix to configurate url to sitemap
+         */
         'route_prefix' => env('BACKEND_URL', 'backend'),
 
-        // config for route prefix
+        /**
+         * config for route prefix
+         */
         'route_as' => 'backend.',
 
-        //driver for sitemap.xml
+        /**
+         * driver for sitemap.xml
+         */
         'filesystem_driver' => 'public',
 
-        // routes middleware
+        /**
+         * routes middleware
+         */
         'route_middleware' => ['web'],
 
         /**
          * to use feature your model have to use trait Sitemap
          * or release method getUrls where you return array with prepared URL's for siteMap
-         * and add class to this array as in the example below 
          */
         'dynamic_url_classes' => [
-            \App\Models\Pages::class
+
         ],
 
         // Route names for siteMap
         'static_routes' => [
 
         ],
+
+        /**
+         * enable multi-language urls
+         */
+        'enable_locales' => false,
+
+        /**
+         * Hide default locale in url from app.locale config
+         */
+        'hide_default_locale' => false,
+
+        /**
+         * locales to multi-language urls
+         */
+        'locales' => [
+            'en',
+        ],
+
+        /**
+         * how many pages will be in one file
+         */
+        'sitemap_count' => 40000,
+
+        /**
+         * Command to generate SiteMap
+         */
+        'sitemap_generate_command' => 'sitemap:generate',
+
+        /**
+         * Jobs priority
+         */
+        'jobs_priority' => 'default',
 ```
 
 ## How to use?

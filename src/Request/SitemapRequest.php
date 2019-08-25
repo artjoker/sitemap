@@ -29,6 +29,7 @@ class SitemapRequest extends FormRequest
             'is_loaded' => 'integer',
             'order' => 'integer',
             'active' => 'integer',
+            'lastmod' => 'date',
         ];
     }
 

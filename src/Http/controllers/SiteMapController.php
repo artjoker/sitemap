@@ -3,6 +3,8 @@
 namespace Artjoker\Sitemap\Http\Controllers;
 
 use Artisan;
+use Artjoker\Sitemap\Jobs\SiteMapGenerateJob;
+use Artjoker\Sitemap\Jobs\SiteMapLoadUrlsJob;
 use Artjoker\Sitemap\Models\Sitemap;
 use Artjoker\Sitemap\Repositories\SitemapRepository;
 use Artjoker\Sitemap\Request\SitemapRequest;
@@ -61,12 +63,12 @@ class SitemapController extends Controller
         $sitemap = new Sitemap();
         $sitemap = $this->repo->store($sitemap);
 
-        Artisan::call('sitemap:generate');
+        dispatch(new SiteMapGenerateJob());
 
         return redirect(
             $request->get('action') == 'continue'
-                ? route(config('sitemap.route_prefix') . '.sitemap.edit', ['id' => $sitemap])
-                : route(config('sitemap.route_prefix') . '.sitemap.index')
+                ? route(config('sitemap.route_as', 'backend.') . 'sitemap.edit', ['id' => $sitemap])
+                : route(config('sitemap.route_as', 'backend.') . 'sitemap.index')
         )->with('success', __('sitemap::sitemap.sitemap_created'));
     }
 
@@ -77,11 +79,11 @@ class SitemapController extends Controller
      */
     public function generate()
     {
-        Artisan::call('sitemap:generate');
+        dispatch(new SiteMapGenerateJob());
 
         return redirect()
-            ->route(config('sitemap.route_prefix') . '.sitemap.index')
-            ->with('success', __('sitemap::sitemap.sitemap_generated'));
+            ->route(config('sitemap.route_as', 'backend.') . 'sitemap.index')
+            ->with('success', __('sitemap::sitemap.sitemap_generate_job'));
     }
 
     /**
@@ -126,12 +128,12 @@ class SitemapController extends Controller
         $sitemap = Sitemap::find($id);
         $sitemap = $this->repo->store($sitemap);
 
-        Artisan::call('sitemap:generate');
+        dispatch(new SiteMapGenerateJob());
 
         return redirect(
             $request->get('action') == 'continue'
-                ? route(config('sitemap.route_prefix') . '.sitemap.edit', ['id' => $sitemap])
-                : route(config('sitemap.route_prefix') . '.sitemap.index')
+                ? route(config('sitemap.route_as', 'backend.') . 'sitemap.edit', ['id' => $sitemap])
+                : route(config('sitemap.route_as', 'backend.') . 'sitemap.index')
         )->with('success', __('sitemap::sitemap.sitemap_updated'));
 
     }
@@ -146,8 +148,8 @@ class SitemapController extends Controller
     public function destroy($id)
     {
         Sitemap::destroy($id);
-        Artisan::call('sitemap:generate');
-        return redirect()->route(config('sitemap.route_prefix') . '.sitemap.index')
+        dispatch(new SiteMapGenerateJob());
+        return redirect()->route(config('sitemap.route_as', 'backend.') . 'sitemap.index')
             ->with('success', __('sitemap::sitemap.sitemap_deleted'));
     }
 
@@ -157,7 +159,7 @@ class SitemapController extends Controller
      */
     public function loadUrls()
     {
-        Artisan::call('sitemap:load:urls');
+        dispatch(new SiteMapLoadUrlsJob());
 
         return redirect()->back()
             ->with('success', __('sitemap::sitemap.sitemap_loaded'));

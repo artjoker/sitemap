@@ -5,7 +5,7 @@
 @section('content')
     <div class="panel panel-default user-panel panel-flat">
         <div class="panel-body">
-            {!! Form::model($sitemap, ['route' => [config('sitemap.route_as', 'backend.') . '.sitemap.update',$sitemap->id],'method'=>'PUT','autocomplete'=>'off','files'=>true,'class'=>'needs-validation','novalidate']) !!}
+            {!! Form::model($sitemap, ['route' => [config('sitemap.route_as', 'backend.') . 'sitemap.update',$sitemap->id],'method'=>'PUT','autocomplete'=>'off','files'=>true,'class'=>'needs-validation','novalidate']) !!}
                 @include('sitemap::fields')
             {!! Form::close() !!}
         </div>
