@@ -56,6 +56,11 @@
         'sitemap_count' => 40000,
 
         /**
+         * How many items to take at a time when loading urls in the database
+         */
+        'model_load_job_chunk' => 100,
+
+        /**
          * Command to generate SiteMap
          */
         'sitemap_generate_command' => 'sitemap:generate',

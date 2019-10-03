@@ -6,24 +6,14 @@ namespace Artjoker\Sitemap\Traits;
 
 trait Sitemap
 {
-    public function getUrls() : array
+    public function scopeSitemap($query)
     {
-        $baseUrl = $this->getBaseUrl();
-
-        $urls = [];
-
-        self::chunk(100, function ($items) use ($baseUrl, &$urls) {
-            foreach ($items as $item) {
-                $urls[] = $this->makeUrl($baseUrl, $item);
-            }
-        });
-
-        return $urls;
+        return $query;
     }
 
-    public function makeUrl($baseUrl, $item) : string
+    public function getUrl() : string
     {
-        return $baseUrl . '/' . $item->{$this->getAlias()};
+        return $this->getBaseUrl() . '/' . $this->{$this->getAlias()};
     }
 
     public function getAlias()
@@ -35,4 +25,5 @@ trait Sitemap
     {
         return ($this->baseUrl) ? $this->baseUrl : url('/');
     }
+
 }

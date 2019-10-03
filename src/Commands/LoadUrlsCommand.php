@@ -2,6 +2,7 @@
 
 namespace Artjoker\Sitemap\Commands;
 
+use Artjoker\Sitemap\Jobs\SiteMapModelLoadUrlsJob;
 use Artjoker\Sitemap\Models\Sitemap;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -60,7 +61,7 @@ class LoadUrlsCommand extends Command
 
             $sitemapQuery->delete();
 
-            $sitemapCount = Sitemap::all()->count();
+            $sitemapCount = Sitemap::count();
 
             if (!$this->option('model')) {
                 $staticRoutes = config('sitemap.static_routes');
@@ -72,14 +73,7 @@ class LoadUrlsCommand extends Command
             }
 
             foreach ($dynamicUrlsModels as $modelName) {
-                $model = new $modelName();
-                if (method_exists($model, 'getUrls')) {
-                    $modelUrls = $model->getUrls();
-                    foreach ($modelUrls as $url) {
-                        $sitemapCount++;
-                        Sitemap::updateOrCreate(['alias' => $url, 'model' => $modelName, 'order' => $sitemapCount, 'is_loaded' => 1]);
-                    }
-                }
+                dispatch(new SiteMapModelLoadUrlsJob($modelName));
             }
 
 
